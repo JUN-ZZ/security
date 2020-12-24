@@ -1,6 +1,6 @@
-package com.jun.reservation.imp;
+package com.jun.reservation.security;
 
-import com.jun.reservation.entity.UserDetailInfo;
+import com.jun.reservation.security.UserDetailsInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,8 +34,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
             grantedAuthorities.add(simpleGrantedAuthority1);
             grantedAuthorities.add(simpleGrantedAuthority2);
 
-            userDetails = new UserDetailInfo(s,bCryptPasswordEncoder.encode(pwd),grantedAuthorities);
-
+            userDetails = new UserDetailsInfo(s,bCryptPasswordEncoder.encode(pwd),grantedAuthorities);
         }
         else {
             String username = "zhangsan";
@@ -46,7 +45,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
             grantedAuthorities.add(simpleGrantedAuthority);
             grantedAuthorities.add(simpleGrantedAuthority1);
 
-            userDetails = new UserDetailInfo(username,bCryptPasswordEncoder.encode(pwd),grantedAuthorities);
+            userDetails = new UserDetailsInfo(username,bCryptPasswordEncoder.encode(pwd),grantedAuthorities);
             logger.info("UserDetailServiceImp loadUserByUsername ",username);
 
         }

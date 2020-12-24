@@ -1,6 +1,6 @@
 package com.jun.reservation.config;
 
-import com.jun.reservation.imp.UserDetailsServiceImp;
+import com.jun.reservation.security.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

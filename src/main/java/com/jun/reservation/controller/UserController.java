@@ -1,8 +1,7 @@
 package com.jun.reservation.controller;
 
 import com.jun.reservation.dao.UserRepository;
-import com.jun.reservation.entity.User;
-import com.jun.reservation.entity.UserDetailInfo;
+import com.jun.reservation.security.UserDetailsInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +102,7 @@ public class UserController {
     public String auth2(){
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        UserDetailInfo userDetailInfo = (UserDetailInfo) authentication.getPrincipal();
+        UserDetailsInfo userDetailInfo = (UserDetailsInfo) authentication.getPrincipal();
 
         logger.info(String.format("auth2 200"));
         logger.info(authentication.getAuthorities().toString());
@@ -123,7 +122,7 @@ public class UserController {
     public String auth233(){
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        UserDetailInfo userDetailInfo = (UserDetailInfo) authentication.getPrincipal();
+        UserDetailsInfo userDetailInfo = (UserDetailsInfo) authentication.getPrincipal();
 
         logger.info(String.format("auth2 200"));
         logger.info(authentication.getAuthorities().toString());
