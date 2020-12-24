@@ -1,4 +1,4 @@
-package com.jun.security.entity;
+package com.jun.reservation.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

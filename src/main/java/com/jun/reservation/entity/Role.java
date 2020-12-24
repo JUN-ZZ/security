@@ -1,4 +1,5 @@
-package com.jun.security.entity;
+package com.jun.reservation.entity;
+
 
 import lombok.Data;
 
@@ -6,23 +7,21 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "tb_authority")
 @Data
-public class Authority {
+@Entity
+@Table(name = "tb_role")
+public class Role {
 
     @Id
+//    auto-increment
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String url;
+    @Column(unique = true)
+    private String roleNickName;
 
     @Column
-    private String requestMethod;
-
-    @Column
-    private String code;
+    private String roleCodeName;
 
     @Column
     private Date createTime;
@@ -31,7 +30,10 @@ public class Authority {
     private String creator;
 
     @Transient
-    private List<Role> roles;
+    private List<User> users;
+
+    @Transient
+    private List<Authority> authorities;
 
 
 

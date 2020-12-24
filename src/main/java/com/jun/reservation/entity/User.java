@@ -1,13 +1,10 @@
-package com.jun.security.entity;
-
+package com.jun.reservation.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.GenerationType;
 
 

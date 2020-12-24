@@ -1,4 +1,4 @@
-package com.jun.security.service.imp;
+package com.jun.reservation.imp;
 
 public interface UserService {
 

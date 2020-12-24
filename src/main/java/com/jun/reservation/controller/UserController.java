@@ -1,8 +1,8 @@
-package com.jun.security.controller;
+package com.jun.reservation.controller;
 
-import com.jun.security.dao.UserRepository;
-import com.jun.security.entity.User;
-import com.jun.security.entity.UserDetailInfo;
+import com.jun.reservation.dao.UserRepository;
+import com.jun.reservation.entity.User;
+import com.jun.reservation.entity.UserDetailInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.Principal;
 import java.util.Map;
 
 @Controller
@@ -81,28 +80,6 @@ public class UserController {
     public String fail(){
         logger.info(String.format("fail", String.valueOf(200)));
         return "fail";
-    }
-
-    @RequestMapping(value = "/user/save",method = RequestMethod.GET)
-    @ResponseBody
-    public String saveUser(){
-        User u = new User();
-        u.setUsername("t");
-        u.setPassword("oo");
-        this.userRepository.save(u);
-        logger.info(String.format("save user {0}", 200));
-        return "save user";
-    }
-
-    @RequestMapping(value = "/user/save/name",method = RequestMethod.GET)
-    @ResponseBody
-    public String saveUserByName(){
-        User u = new User();
-        u.setUsername("t");
-        u.setPassword("oo");
-        this.userRepository.save(u);
-        logger.info(String.format("save user {0}", 200));
-        return "save user";
     }
 
     @PreAuthorize("hasAnyAuthority('all')")
