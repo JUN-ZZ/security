@@ -11,24 +11,27 @@ import javax.persistence.GenerationType;
 @Entity
 @Table(name = "tb_user")
 @Data
-public class User {
+public class User extends Base{
 
     @Id
 //    @GenericGenerator(name = "IDGenerator", strategy = "IDENTITY")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username",nullable = true,unique = true,length = 64)
+    @Column(name = "username",nullable = false,unique = true,length = 64)
     private String username;
 
-    @Column(name = "password",nullable = true)
+    @Column(name = "password",nullable = false)
     private String password;
 
     @Column
-    private Date createdTime;
+    private Long shopId;
 
     @Column
-    private String creator;
+    private String registerAddress;
+
+    @Column
+    private String registerIp;
 
     @Transient
     private List<Role> roles;
