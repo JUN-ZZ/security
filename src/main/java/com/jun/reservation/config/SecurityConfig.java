@@ -25,8 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //super.configure(http);
         //定制请求的授权规则
         http.authorizeRequests().antMatchers("/").permitAll()
-                .antMatchers("/h").hasAnyAuthority("VIP2").antMatchers("/VI").hasAnyRole("VIP1","VIP2").and().csrf().disable().cors().and()
-        .authorizeRequests().antMatchers("/ha").hasRole("V");
+                .and().csrf().disable().cors();
 
         //开启自动配置的登陆功能，效果，如果没有登陆，没有权限就会来到登陆页面
 //        http.formLogin().usernameParameter("user").passwordParameter("pwd").loginPage("/h")
