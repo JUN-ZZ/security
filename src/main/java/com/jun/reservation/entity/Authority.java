@@ -32,7 +32,7 @@ public class Authority extends Base {
     @Column
     private String code;
 
-    @Transient
+    @ManyToMany
     private List<Role> roles;
 
 

@@ -116,25 +116,6 @@ public class UserController {
         return "auth";
     }
 
-    @PreAuthorize("hasAuthority('auth3')")
-    @RequestMapping(value = "/auth2",method = {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public String auth233(){
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        UserDetailsInfo userDetailInfo = (UserDetailsInfo) authentication.getPrincipal();
-
-        logger.info(String.format("auth2 200"));
-        logger.info(authentication.getAuthorities().toString());
-        logger.info(authentication.getDetails().toString());
-        logger.info(authentication.getPrincipal().toString());
-        logger.info(String.format("auth {}", String.valueOf(200)));
-        logger.info(userDetailInfo.getAuthorities().toString(),userDetailInfo.getUsername());
-        logger.info(userDetailInfo.getUsername());
-        logger.info(userDetailInfo.getPassword());
-
-        return "auth";
-    }
 
 
 }

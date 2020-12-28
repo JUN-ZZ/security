@@ -30,7 +30,7 @@ public class Role extends Base {
     @Transient
     private List<User> users;
 
-    @Transient
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Authority> authorities;
 
 

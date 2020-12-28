@@ -40,7 +40,7 @@ public class ReservationOrder extends Base {
     private Date reservationTime;
 
     @Column
-    private String mark;
+    private String remark;
 
     @Column
     private boolean isExpire;

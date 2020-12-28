@@ -14,9 +14,6 @@ public class Goods extends Base{
     private Long id;
 
     @Column
-    private Long shopId;
-
-    @Column
     private String name;
 
     @Column
@@ -28,8 +25,10 @@ public class Goods extends Base{
     @Column
     private String imgUrl;
 
-    
-    
+    @ManyToOne(cascade = {CascadeType.DETACH},fetch = FetchType.LAZY)
+    @JoinColumn(name = "shopId",referencedColumnName = "id")
+    private Shop shop;
+
 
 
 }
