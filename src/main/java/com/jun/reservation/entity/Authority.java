@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_authority")
@@ -32,8 +33,8 @@ public class Authority extends Base {
     @Column
     private String code;
 
-    @ManyToMany
-    private List<Role> roles;
+    @ManyToMany(mappedBy = "authorities",fetch = FetchType.LAZY)
+    private Set<Role> roles;
 
 
 

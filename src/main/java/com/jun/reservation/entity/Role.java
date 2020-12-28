@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -27,11 +28,11 @@ public class Role extends Base {
     @Column(unique = true)
     private String roleCodeName;
 
-    @Transient
-    private List<User> users;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<Authority> authorities;
+    private Set<Authority> authorities;
 
 
 

@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.GenerationType;
 
 
@@ -38,7 +39,7 @@ public class User extends Base{
             joinColumns =
             @JoinColumn(name = "user_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
 
 

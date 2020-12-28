@@ -13,12 +13,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -31,15 +28,15 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findUserByUsername(username);
         UserDetailsInfo userDetailsInfo;
         if (user==null){
             throw new UsernameNotFoundException("user not found");
         }else {
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-            List<Role> roles = user.getRoles();
+            Set<Role> roles = user.getRoles();
             for(Role role:roles){
-                List<Authority> authorities = role.getAuthorities();
+                Set<Authority> authorities = role.getAuthorities();
                 for(Authority authority:authorities){
                     grantedAuthorities.add(new SimpleGrantedAuthority(authority.getCode()));
                 }
