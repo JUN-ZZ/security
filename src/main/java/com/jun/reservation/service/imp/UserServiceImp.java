@@ -4,6 +4,8 @@ import com.jun.reservation.dao.UserRepository;
 import com.jun.reservation.entity.User;
 import com.jun.reservation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,31 +20,38 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User findUserByName(String username) {
-        return null;
+        return userRepository.findUserByUsername(username);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteUserById(Long id) {
-
+        userRepository.deleteById(id);
     }
 
     @Override
-    public List<User> findUsers() {
-        return null;
+    public List<User> findAllUsers() {
+        List<User> userList = userRepository.findAll();
+        return userList;
     }
 
     @Override
-    public List<User> findUsers(int pageNum, int pageSize) {
+    public List<User> findAllUsers(int pageNum, int pageSize) {
         return null;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public User saveUser(User user) {
-        return null;
+        User user1 = userRepository.save(user);
+        return user1;
     }
 
+    @Transactional
     @Override
     public User updateUser(User user) {
-        return null;
+        return userRepository.saveAndFlush(user);
     }
+
+
 }

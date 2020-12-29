@@ -14,9 +14,9 @@ public interface UserService {
 
     public void deleteUserById(Long id);
 
-    public List<User> findUsers();
+    public List<User> findAllUsers();
 
-    public List<User> findUsers(int pageNum,int pageSize);
+    public List<User> findAllUsers(int pageNum,int pageSize);
 
     public User saveUser(User user);
 

@@ -50,9 +50,9 @@ public class UserController {
         return "loginSuccess";
     }
 
-    @RequestMapping(value = "/Mylogin",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/login",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public String Mylogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    public String myLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
@@ -81,7 +81,7 @@ public class UserController {
         return "fail";
     }
 
-    @PreAuthorize("hasAnyAuthority('all')")
+    @PreAuthorize("hasAnyAuthority('all') && hasRole('')")
     @RequestMapping(value = "/auth",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public String auth(){
