@@ -22,6 +22,7 @@ import java.util.Set;
 public class UserDetailsServiceImp implements UserDetailsService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImp.class);
+    private String defaultRolePrefix = "ROLE_";
 
     @Autowired
     private UserRepository userRepository;
@@ -38,9 +39,13 @@ public class UserDetailsServiceImp implements UserDetailsService {
             for(Role role:roles){
                 Set<Authority> authorities = role.getAuthorities();
                 for(Authority authority:authorities){
-                    grantedAuthorities.add(new SimpleGrantedAuthority(authority.getCode()));
+                    if (authority.getCode() != null && !"".equals(authority.getCode())){
+                        grantedAuthorities.add(new SimpleGrantedAuthority(authority.getCode()));
+                    }
                 }
-                grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleCodeName()));
+                if(role.getRoleCodeName() != null && !"".equals(role.getRoleCodeName())){
+                    grantedAuthorities.add(new SimpleGrantedAuthority(this.defaultRolePrefix + role.getRoleCodeName()));
+                }
             }
 
             userDetailsInfo = new UserDetailsInfo(user.getUsername(),user.getPassword(),grantedAuthorities);
