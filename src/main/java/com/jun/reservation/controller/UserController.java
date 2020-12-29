@@ -1,7 +1,11 @@
 package com.jun.reservation.controller;
 
 import com.jun.reservation.dao.UserRepository;
+import com.jun.reservation.entity.User;
+import com.jun.reservation.response.ResponseResult;
+import com.jun.reservation.response.Result;
 import com.jun.reservation.security.UserDetailsInfo;
+import com.jun.reservation.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,7 @@ public class UserController {
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @RequestMapping(value = "/",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
@@ -50,29 +52,18 @@ public class UserController {
         return "loginSuccess";
     }
 
-    @RequestMapping(value = "/Mylogin",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public String myLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
-
+    public Result login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+//        登录成功之后从security 取出 context
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
 
-        logger.info(String.format("Mylogin 200"));
-        logger.info(authentication.getAuthorities().toString());
-        logger.info(authentication.getDetails().toString());
-        logger.info(authentication.getPrincipal().toString());
+        UserDetailsInfo userDetailsInfo = (UserDetailsInfo) authentication.getPrincipal();
 
-        return "Mylogin";
+        return ResponseResult.success(userDetailsInfo);
     }
 
-
-    @PreAuthorize("hasAnyAuthority('VIP2','ROLE_V')")
-    @RequestMapping(value = "/h",method = {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public String s(){
-        logger.info(String.format("hhhhh", String.valueOf(200)));
-        return "..";
-    }
 
     @RequestMapping(value = "/fail",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
@@ -81,41 +72,26 @@ public class UserController {
         return "fail";
     }
 
-    @PreAuthorize("hasAnyAuthority('all') && hasRole('')")
-    @RequestMapping(value = "/auth",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/user",method = RequestMethod.POST)
     @ResponseBody
-    public String auth(){
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
+    public Result saveUser(@RequestBody User user){
+        User user1 = userService.saveUser(user);
 
-        logger.info(String.format("auth 200"));
-        logger.info(authentication.getAuthorities().toString());
-        logger.info(authentication.getDetails().toString());
-        logger.info(authentication.getPrincipal().toString());
-        logger.info(String.format("auth {}", String.valueOf(200)));
-        return "auth";
+        return ResponseResult.success(user1);
     }
 
-    @PreAuthorize("hasRole('admin')")
-    @RequestMapping(value = "/auth2",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/user",method = RequestMethod.POST)
     @ResponseBody
-    public String auth2(){
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        UserDetailsInfo userDetailInfo = (UserDetailsInfo) authentication.getPrincipal();
-
-        logger.info(String.format("auth2 200"));
-        logger.info(authentication.getAuthorities().toString());
-        logger.info(authentication.getDetails().toString());
-        logger.info(authentication.getPrincipal().toString());
-        logger.info(String.format("auth {}", String.valueOf(200)));
-        logger.info(userDetailInfo.getAuthorities().toString(),userDetailInfo.getUsername());
-        logger.info(userDetailInfo.getUsername());
-        logger.info(userDetailInfo.getPassword());
-
-        return "auth";
+    public Result updateUser(@RequestBody User user){
+        userService.updateUser(user);
+        return ResponseResult.success();
     }
 
-
+    @RequestMapping(value = "/user",method = RequestMethod.POST)
+    @ResponseBody
+    public Result deleteUser(@RequestParam Long id){
+        userService.deleteUserById(id);
+        return ResponseResult.success();
+    }
 
 }

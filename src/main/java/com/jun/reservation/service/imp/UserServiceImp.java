@@ -4,6 +4,7 @@ import com.jun.reservation.dao.UserRepository;
 import com.jun.reservation.entity.User;
 import com.jun.reservation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @author jun
  * @date 2020/12/24
  */
+@Service
 public class UserServiceImp implements UserService {
 
     @Autowired

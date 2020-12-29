@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //开启自动配置的登陆功能，效果，如果没有登陆，没有权限就会来到登陆页面
 //        http.formLogin().usernameParameter("user").passwordParameter("pwd").loginPage("/h")
 //                .successForwardUrl("/h");
-        http.formLogin().loginProcessingUrl("/Mylogin").failureForwardUrl("/fail").successForwardUrl("/loginSuccess");
+        http.formLogin().loginPage("/login").loginProcessingUrl("/login").failureForwardUrl("/fail").successForwardUrl("/loginSuccess");
         //1、 /login 来到登陆页
         //2、重定向到/login?error表示登陆失败
         //3、更多详细功能
