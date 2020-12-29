@@ -48,4 +48,16 @@ class ReservationApplicationTests {
 
     }
 
+    @Test
+    void saveUser(){
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        User user = new User();
+        user.setUsername("zxj");
+        user.setPassword(bCryptPasswordEncoder.encode("zxj"));
+        userRepository.save(user);
+
+    }
+
+
+
 }

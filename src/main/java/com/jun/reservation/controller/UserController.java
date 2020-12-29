@@ -50,7 +50,7 @@ public class UserController {
         return "loginSuccess";
     }
 
-    @RequestMapping(value = "/login",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/Mylogin",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public String myLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
 
