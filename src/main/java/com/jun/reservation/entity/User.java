@@ -35,7 +35,7 @@ public class User extends Base{
     @Column
     private String registerIp;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "tb_user_role",
             joinColumns =
             @JoinColumn(name = "user_id",referencedColumnName = "id"),

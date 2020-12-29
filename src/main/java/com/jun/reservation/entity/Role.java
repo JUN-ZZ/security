@@ -29,10 +29,10 @@ public class Role extends Base {
     @Column(unique = true)
     private String roleCodeName;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Authority> authorities = new HashSet<>();
 
     @Override

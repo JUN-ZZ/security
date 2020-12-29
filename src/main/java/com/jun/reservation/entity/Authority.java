@@ -33,7 +33,7 @@ public class Authority extends Base {
     @Column
     private String code;
 
-    @ManyToMany(mappedBy = "authorities",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "authorities",fetch = FetchType.LAZY)
     private Set<Role> roles;
 
     @Override
