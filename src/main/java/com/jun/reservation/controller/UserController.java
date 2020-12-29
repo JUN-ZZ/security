@@ -72,6 +72,7 @@ public class UserController {
         return "fail";
     }
 
+    @PreAuthorize("hasAuthority('user:add')")
     @RequestMapping(value = "/user",method = RequestMethod.POST)
     @ResponseBody
     public Result saveUser(@RequestBody User user){
@@ -80,14 +81,16 @@ public class UserController {
         return ResponseResult.success(user1);
     }
 
-    @RequestMapping(value = "/user",method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('user:edit')")
+    @RequestMapping(value = "/user",method = RequestMethod.PUT)
     @ResponseBody
     public Result updateUser(@RequestBody User user){
         userService.updateUser(user);
         return ResponseResult.success();
     }
 
-    @RequestMapping(value = "/user",method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('user:delete')")
+    @RequestMapping(value = "/user",method = RequestMethod.DELETE)
     @ResponseBody
     public Result deleteUser(@RequestParam Long id){
         userService.deleteUserById(id);
