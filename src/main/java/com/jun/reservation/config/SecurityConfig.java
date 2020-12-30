@@ -131,7 +131,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 map.put("code",200);
                 map.put("msg", "登录成功！");
                 map.put("data", authentication.getPrincipal());
-                System.out.println(map);
+//                System.out.println(map);
                 resp.setContentType("application/json;charset=utf-8");
                 PrintWriter out = resp.getWriter();
                 // 对象转json传输给前端
