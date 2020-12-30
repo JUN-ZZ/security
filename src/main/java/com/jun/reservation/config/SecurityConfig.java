@@ -49,11 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAt(customAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class) //用重写的Filter替换掉原有的UsernamePasswordAuthenticationFilter
                 .formLogin()
-                .loginProcessingUrl("/userLogin")
+                .loginProcessingUrl("/login")
 //                .successForwardUrl("/loginSuccess")
 //                .failureForwardUrl("/fail")
-                .successHandler(authenticationSuccessHandler())
-                .failureHandler(authenticationFailureHandler())
+//                .successHandler(authenticationSuccessHandler())
+//                .failureHandler(authenticationFailureHandler())
                 .and()
                 .authorizeRequests()
                 .and()
@@ -119,9 +119,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
-//        filter.setAuthenticationSuccessHandler(new SuccessHandler());
-//        filter.setAuthenticationFailureHandler(new FailureHandler());
-//        filter.setFilterProcessesUrl("/login");
+        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+        filter.setAuthenticationFailureHandler(authenticationFailureHandler());
+        filter.setFilterProcessesUrl("/login");
 
         //这句很关键，重用WebSecurityConfigurerAdapter配置的AuthenticationManager，不然要自己组装AuthenticationManager
         filter.setAuthenticationManager(authenticationManagerBean());

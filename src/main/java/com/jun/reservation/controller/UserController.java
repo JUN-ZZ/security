@@ -28,14 +28,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/",method = {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public String home(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
-        Map map = httpServletRequest.getParameterMap();
-        logger.info(String.format("home ", String.valueOf(200)));
-        logger.info(map.toString());
-        return "..";
-    }
+//    @RequestMapping(value = "/",method = {RequestMethod.GET,RequestMethod.POST})
+//    @ResponseBody
+//    public String home(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+//        Map map = httpServletRequest.getParameterMap();
+//        logger.info(String.format("home ", String.valueOf(200)));
+//        logger.info(map.toString());
+//        return "home";
+//    }
     
     @RequestMapping(value = "/loginSuccess",method = {RequestMethod.POST})
     @ResponseBody
