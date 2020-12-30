@@ -1,13 +1,31 @@
 package com.jun.reservation.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jun.reservation.security.CustomAuthenticationFilter;
 import com.jun.reservation.security.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *   security  configure
@@ -22,15 +40,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //super.configure(http);
         //定制请求的授权规则
-        http.authorizeRequests().antMatchers("/").permitAll()
-                .and().csrf().disable().cors();
+        http.authorizeRequests()
+                .antMatchers("/login")
+                .permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterAt(customAuthenticationFilter(),
+                        UsernamePasswordAuthenticationFilter.class) //用重写的Filter替换掉原有的UsernamePasswordAuthenticationFilter
+                .formLogin()
+                .loginProcessingUrl("/userLogin")
+//                .successForwardUrl("/loginSuccess")
+//                .failureForwardUrl("/fail")
+                .successHandler(authenticationSuccessHandler())
+                .failureHandler(authenticationFailureHandler())
+                .and()
+                .authorizeRequests()
+                .and()
+                .csrf()
+                .disable()
+                .cors().disable()
+                .authorizeRequests()
+                .and()
+                .logout().logoutUrl("/logout").permitAll()
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint())
+        ;
+
 
         //开启自动配置的登陆功能，效果，如果没有登陆，没有权限就会来到登陆页面
 //        http.formLogin().usernameParameter("user").passwordParameter("pwd").loginPage("/h")
 //                .successForwardUrl("/h");
-        http.formLogin().loginPage("/login").loginProcessingUrl("/login").failureForwardUrl("/fail").successForwardUrl("/loginSuccess");
+//        http.formLogin().loginPage("/login").loginProcessingUrl("/").failureForwardUrl("/fail").successForwardUrl("/loginSuccess");
         //1、 /login 来到登陆页
         //2、重定向到/login?error表示登陆失败
         //3、更多详细功能
@@ -71,4 +114,92 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        authenticationManagerBuilder.userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
     }
+
+    //注册自定义的UsernamePasswordAuthenticationFilter
+    @Bean
+    CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+        CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
+//        filter.setAuthenticationSuccessHandler(new SuccessHandler());
+//        filter.setAuthenticationFailureHandler(new FailureHandler());
+//        filter.setFilterProcessesUrl("/login");
+
+        //这句很关键，重用WebSecurityConfigurerAdapter配置的AuthenticationManager，不然要自己组装AuthenticationManager
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
+    }
+
+    protected AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
+                Map<String, Object> map = new HashMap<>();
+                map.put("code",200);
+                map.put("msg", "登录成功！");
+                map.put("data", authentication.getPrincipal());
+                System.out.println(map);
+                resp.setContentType("application/json;charset=utf-8");
+                PrintWriter out = resp.getWriter();
+                // 对象转json传输给前端
+                out.write(new ObjectMapper().writeValueAsString(map));
+                out.flush();
+                out.close();
+            }
+        };
+    }
+
+    protected AuthenticationFailureHandler authenticationFailureHandler() {
+        return new AuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException, ServletException {
+                Map<String, Object> map = new HashMap<>();
+                map.put("code",402);
+                map.put("data",null);
+                map.put("message", "登录失败！");
+
+                resp.setContentType("application/json;charset=utf-8");
+                PrintWriter out = resp.getWriter();
+                // 对象转json传输给前端
+                out.write(new ObjectMapper().writeValueAsString(map));
+                out.flush();
+                out.close();
+            }
+        };
+    }
+
+    protected LogoutSuccessHandler logoutSuccessHandler(){
+        return new LogoutSuccessHandler() {
+            @Override
+            public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
+                Map<String, Object> map = new HashMap<>();
+                map.put("code",200);
+                map.put("data",null);
+                map.put("message", "注销成功！");
+                resp.setContentType("application/json;charset=utf-8");
+                PrintWriter out = resp.getWriter();
+                // 对象转json传输给前端
+                out.write(new ObjectMapper().writeValueAsString(map));
+                out.flush();
+                out.close();
+            }
+        };
+    }
+
+    protected AuthenticationEntryPoint authenticationEntryPoint(){
+        return new AuthenticationEntryPoint() {
+            @Override
+            public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException, ServletException {
+                Map<String, Object> map = new HashMap<>();
+                map.put("code",403);
+                map.put("data",null);
+                map.put("message", "没有访问权限,请先登录！");
+                resp.setContentType("application/json;charset=utf-8");
+                PrintWriter out = resp.getWriter();
+                // 对象转json传输给前端
+                out.write(new ObjectMapper().writeValueAsString(map));
+                out.flush();
+                out.close();
+            }
+        };
+    }
+
 }

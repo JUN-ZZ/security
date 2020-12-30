@@ -37,7 +37,7 @@ public class UserController {
         return "..";
     }
     
-    @RequestMapping(value = "/loginSuccess",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/loginSuccess",method = {RequestMethod.POST})
     @ResponseBody
     public String loginSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
 
@@ -51,21 +51,21 @@ public class UserController {
 
         return "loginSuccess";
     }
+//
+//    @RequestMapping(value = "/login",method = RequestMethod.POST)
+//    @ResponseBody
+//    public Result login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+////        登录成功之后从security 取出 context
+//        SecurityContext securityContext = SecurityContextHolder.getContext();
+//        Authentication authentication = securityContext.getAuthentication();
+//
+//        UserDetailsInfo userDetailsInfo = (UserDetailsInfo) authentication.getPrincipal();
+//
+//        return ResponseResult.success(userDetailsInfo);
+//    }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    @ResponseBody
-    public Result login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
-//        登录成功之后从security 取出 context
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
 
-        UserDetailsInfo userDetailsInfo = (UserDetailsInfo) authentication.getPrincipal();
-
-        return ResponseResult.success(userDetailsInfo);
-    }
-
-
-    @RequestMapping(value = "/fail",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/fail",method = {RequestMethod.POST})
     @ResponseBody
     public String fail(){
         logger.info(String.format("fail", String.valueOf(200)));
