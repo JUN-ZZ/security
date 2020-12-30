@@ -30,15 +30,15 @@ public class UserController {
 
     @RequestMapping(value = "/",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public String home(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    public Result home(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         Map map = httpServletRequest.getParameterMap();
         logger.info(map.toString());
-        return "welcome to home page";
+        return ResponseResult.success("welcome to home page");
     }
     
     @RequestMapping(value = "/loginSuccess",method = {RequestMethod.POST})
     @ResponseBody
-    public String loginSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    public Result loginSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
@@ -48,9 +48,10 @@ public class UserController {
         logger.info(authentication.getDetails().toString());
         logger.info(authentication.getPrincipal().toString());
 
-        return "loginSuccess";
+        return ResponseResult.success("loginSuccess");
     }
-//
+
+//  已经有自定义的filter实现了拦截登录认证的请求了 不需要在重新写
 //    @RequestMapping(value = "/login",method = RequestMethod.POST)
 //    @ResponseBody
 //    public Result login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
@@ -66,16 +67,21 @@ public class UserController {
 
     @RequestMapping(value = "/fail",method = {RequestMethod.POST})
     @ResponseBody
-    public String fail(){
+    public Result<Object> fail(){
         logger.info(String.format("fail", String.valueOf(200)));
-        return "fail";
+        return ResponseResult.failure();
     }
 
     @PreAuthorize("hasAuthority('user:add')")
     @RequestMapping(value = "/user",method = RequestMethod.POST)
     @ResponseBody
     public Result saveUser(@RequestBody User user){
-        User user1 = userService.saveUser(user);
+        User user1 = null;
+        try {
+            user1 = userService.saveUser(user);
+        }catch (Exception e){
+            return ResponseResult.failure(e.getMessage());
+        }
 
         return ResponseResult.success(user1);
     }
@@ -84,7 +90,11 @@ public class UserController {
     @RequestMapping(value = "/user",method = RequestMethod.PUT)
     @ResponseBody
     public Result updateUser(@RequestBody User user){
-        userService.updateUser(user);
+        try {
+            userService.updateUser(user);
+        }catch (Exception e){
+            return ResponseResult.failure(e.getMessage());
+        }
         return ResponseResult.success();
     }
 
@@ -92,7 +102,11 @@ public class UserController {
     @RequestMapping(value = "/user",method = RequestMethod.DELETE)
     @ResponseBody
     public Result deleteUser(@RequestParam Long id){
-        userService.deleteUserById(id);
+        try {
+            userService.deleteUserById(id);
+        }catch (Exception e){
+            return ResponseResult.failure(e.getMessage());
+        }
         return ResponseResult.success();
     }
 

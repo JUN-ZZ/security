@@ -21,6 +21,14 @@ public class ResponseResult {
 
     }
 
+    public static <T> Result<T> success(String msg){
+
+        Result result = new Result(null,msg,ResponseCode.RESPONSE_CODE_200.getCode());
+
+        return result;
+
+    }
+
     public static <T> Result<T> success(){
 
         Result result = new Result(null,ResponseCode.RESPONSE_CODE_200.getValue(),ResponseCode.RESPONSE_CODE_200.getCode());
@@ -104,6 +112,11 @@ public class ResponseResult {
 
     }
 
+    /**
+     *
+     * @param <T>
+     * @return
+     */
     public static <T> Result<T> failure_not_found(){
 
         Result result = new Result(null,ResponseCode.RESPONSE_CODE_404.getValue(),ResponseCode.RESPONSE_CODE_404.getCode());
@@ -113,6 +126,13 @@ public class ResponseResult {
 
     }
 
+    /**
+     *
+     * @param message
+     * @param code
+     * @param <T>
+     * @return
+     */
     public static <T> Result<T> failure_not_found(String message,String code){
 
         Result result = new Result(null,message,code);
@@ -121,5 +141,18 @@ public class ResponseResult {
 
     }
 
+    /**
+     *
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> failure(String message){
+
+        Result result = new Result(null,message,ResponseCode.RESPONSE_CODE_500.getCode());
+
+        return result;
+
+    }
 
 }
