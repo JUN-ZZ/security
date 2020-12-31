@@ -2,6 +2,7 @@ package com.jun.reservation.service;
 
 
 import com.jun.reservation.entity.User;
+import com.jun.reservation.response.Pagination;
 
 import java.util.List;
 
@@ -14,9 +15,9 @@ public interface UserService {
 
     public void deleteUserById(Long id);
 
-    public List<User> findAllUsers();
+    public Pagination findAllUsers();
 
-    public List<User> findAllUsers(int pageNum,int pageSize);
+    public Pagination findUsers(int pageNum, int pageSize);
 
     public User saveUser(User user);
 

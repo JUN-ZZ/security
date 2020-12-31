@@ -1,5 +1,6 @@
 package com.jun.reservation.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class User extends Base{
     @Column
     private String registerIp;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "tb_user_role",
             joinColumns =

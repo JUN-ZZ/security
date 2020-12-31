@@ -2,6 +2,7 @@ package com.jun.reservation.controller;
 
 import com.jun.reservation.dao.UserRepository;
 import com.jun.reservation.entity.User;
+import com.jun.reservation.response.Pagination;
 import com.jun.reservation.response.ResponseResult;
 import com.jun.reservation.response.Result;
 import com.jun.reservation.security.UserDetailsInfo;
@@ -72,7 +73,7 @@ public class UserController {
         return ResponseResult.failure();
     }
 
-    @PreAuthorize("hasAuthority('user:add')")
+//    @PreAuthorize("hasAuthority('user:add')")
     @RequestMapping(value = "/user",method = RequestMethod.POST)
     @ResponseBody
     public Result saveUser(@RequestBody User user){
@@ -86,16 +87,17 @@ public class UserController {
         return ResponseResult.success(user1);
     }
 
-    @PreAuthorize("hasAuthority('user:edit')")
+//    @PreAuthorize("hasAuthority('user:edit')")
     @RequestMapping(value = "/user",method = RequestMethod.PUT)
     @ResponseBody
     public Result updateUser(@RequestBody User user){
+        User u;
         try {
-            userService.updateUser(user);
+           u = userService.updateUser(user);
         }catch (Exception e){
             return ResponseResult.failure(e.getMessage());
         }
-        return ResponseResult.success();
+        return ResponseResult.success(u);
     }
 
     @PreAuthorize("hasAuthority('user:delete')")
@@ -109,5 +111,37 @@ public class UserController {
         }
         return ResponseResult.success();
     }
+
+
+//    @PreAuthorize("hasAuthority('user:get')")
+    @RequestMapping(value = "/user",method = RequestMethod.GET)
+    @ResponseBody
+    public Result findUser(@RequestParam int pageNum, @RequestParam int pageSize){
+        Pagination pagination = null;
+
+        try {
+            pagination = userService.findUsers(pageNum,pageSize);
+
+        }catch (Exception e){
+            return ResponseResult.failure(e.getMessage());
+        }
+        return ResponseResult.success(pagination);
+    }
+
+    //    @PreAuthorize("hasAuthority('user:get')")
+    @RequestMapping(value = "/userAll",method = RequestMethod.GET)
+    @ResponseBody
+    public Result findAllUsers(){
+        Pagination pagination = null;
+
+        try {
+            pagination = userService.findAllUsers();
+
+        }catch (Exception e){
+            return ResponseResult.failure(e.getMessage());
+        }
+        return ResponseResult.success(pagination.getDataList());
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.jun.reservation.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,9 +30,11 @@ public class Role extends Base {
     @Column(unique = true)
     private String roleCodeName;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Authority> authorities = new HashSet<>();
 

@@ -2,6 +2,7 @@ package com.jun.reservation.service.imp;
 
 import com.jun.reservation.dao.UserRepository;
 import com.jun.reservation.entity.User;
+import com.jun.reservation.response.Pagination;
 import com.jun.reservation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,26 +30,50 @@ public class UserServiceImp implements UserService {
         return userRepository.findUserByUsername(username);
     }
 
+    /**
+     *
+     * @param id
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
-    public List<User> findAllUsers() {
+    public Pagination findAllUsers() {
         List<User> userList = userRepository.findAll();
-        return userList;
+
+        Pagination pagination = new Pagination();
+        pagination.setDataList(userList);
+
+        return pagination;
     }
 
+    /**
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
-    public List<User> findAllUsers(int pageNum, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
+    public Pagination findUsers(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum-1, pageSize);
         Page<User> page = userRepository.findAll(pageable);
+        Pagination pagination = Pagination.convert(page);
 
-        return page.getContent();
+        return pagination;
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public User saveUser(User user) {
@@ -56,6 +81,11 @@ public class UserServiceImp implements UserService {
         return user1;
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     @Transactional
     @Override
     public User updateUser(User user) {
