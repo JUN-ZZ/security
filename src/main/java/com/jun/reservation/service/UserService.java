@@ -1,6 +1,7 @@
 package com.jun.reservation.service;
 
 
+import com.jun.reservation.DTO.UserDTO;
 import com.jun.reservation.entity.User;
 import com.jun.reservation.response.Pagination;
 
@@ -21,7 +22,8 @@ public interface UserService {
 
     public User saveUser(User user);
 
-    public User updateUser(User user);
+    public User updateUser(UserDTO userDTO);
 
+    boolean updateUserById(Long id,String username,String password);
 
 }

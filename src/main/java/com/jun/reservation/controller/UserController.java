@@ -1,5 +1,6 @@
 package com.jun.reservation.controller;
 
+import com.jun.reservation.DTO.UserDTO;
 import com.jun.reservation.dao.UserRepository;
 import com.jun.reservation.entity.User;
 import com.jun.reservation.response.Pagination;
@@ -90,10 +91,10 @@ public class UserController {
 //    @PreAuthorize("hasAuthority('user:edit')")
     @RequestMapping(value = "/user",method = RequestMethod.PUT)
     @ResponseBody
-    public Result updateUser(@RequestBody User user){
+    public Result updateUser(@RequestBody UserDTO userDTO){
         User u;
         try {
-           u = userService.updateUser(user);
+           u = userService.updateUser(userDTO);
         }catch (Exception e){
             return ResponseResult.failure(e.getMessage());
         }
@@ -141,6 +142,24 @@ public class UserController {
             return ResponseResult.failure(e.getMessage());
         }
         return ResponseResult.success(pagination.getDataList());
+    }
+
+
+    @RequestMapping(value = "/user/password",method = RequestMethod.PUT)
+    @ResponseBody
+    public Result updateUserOfUsernameAndPwd(@RequestParam(name = "id") Long id,@RequestParam String username,@RequestParam String password){
+        Boolean u;
+        try {
+            u = userService.updateUserById(id, username, password);
+        }catch (Exception e){
+            return ResponseResult.failure(e.getMessage());
+        }
+
+        if(!u){
+            return ResponseResult.failure();
+        }
+
+        return ResponseResult.success(u);
     }
 
 

@@ -1,9 +1,11 @@
 package com.jun.reservation.service.imp;
 
+import com.jun.reservation.DTO.UserDTO;
 import com.jun.reservation.dao.UserRepository;
 import com.jun.reservation.entity.User;
 import com.jun.reservation.response.Pagination;
 import com.jun.reservation.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -83,14 +85,27 @@ public class UserServiceImp implements UserService {
 
     /**
      *
-     * @param user
+     * @param userDTO
      * @return
      */
     @Transactional
     @Override
-    public User updateUser(User user) {
+    public User updateUser(UserDTO userDTO) {
+
+        User user = userRepository.getOne(userDTO.getId());
+        BeanUtils.copyProperties(userDTO,user);
+
         return userRepository.saveAndFlush(user);
     }
 
+
+    @Transactional
+    @Override
+    public boolean updateUserById(Long id,String username,String password) {
+
+        boolean isUpdate = userRepository.updateUserById(id, username, password);
+
+        return isUpdate;
+    }
 
 }
