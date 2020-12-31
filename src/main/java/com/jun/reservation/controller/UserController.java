@@ -145,12 +145,17 @@ public class UserController {
     }
 
 
+    /**
+     *
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "/user/password",method = RequestMethod.PUT)
     @ResponseBody
-    public Result updateUserOfUsernameAndPwd(@RequestParam(name = "id") Long id,@RequestParam String username,@RequestParam String password){
+    public Result updateUserOfUsernameAndPwd(@RequestBody Map<String,Object> map){
         Boolean u;
         try {
-            u = userService.updateUserById(id, username, password);
+            u = (Boolean) userService.updateUserById(Long.valueOf(String.valueOf(map.get("id"))), (String) map.get("username"), (String)map.get("password"));
         }catch (Exception e){
             return ResponseResult.failure(e.getMessage());
         }

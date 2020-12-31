@@ -103,7 +103,9 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean updateUserById(Long id,String username,String password) {
 
-        boolean isUpdate = userRepository.updateUserById(id, username, password);
+        int isUp = userRepository.updateUserById(id, username, password);
+
+        boolean isUpdate = isUp ==1 ? true:false;
 
         return isUpdate;
     }
