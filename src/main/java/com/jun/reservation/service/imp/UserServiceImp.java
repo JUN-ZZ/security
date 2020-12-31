@@ -4,6 +4,10 @@ import com.jun.reservation.dao.UserRepository;
 import com.jun.reservation.entity.User;
 import com.jun.reservation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +43,10 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<User> findAllUsers(int pageNum, int pageSize) {
-        return null;
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Page<User> page = userRepository.findAll(pageable);
+
+        return page.getContent();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

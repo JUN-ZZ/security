@@ -8,10 +8,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -58,6 +65,52 @@ class ReservationApplicationTests {
 
     }
 
+    @Test
+    void page(){
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<User> page = userRepository.findAll(pageable);
+        System.out.println(page);
+        System.out.println(page.getTotalElements());
+        System.out.println(page.getTotalPages());
+        System.out.println(page.getContent());
 
+    }
 
+    @Test
+    void pageG(){
+        Sort sort = Sort.by(Sort.Direction.DESC, "username");
+        Pageable pageable = PageRequest.of(0, 10,sort);
+        Page<User> page = userRepository.findAll(pageable);
+        System.out.println(page);
+        System.out.println(page.getTotalElements());
+        System.out.println(page.getTotalPages());
+        System.out.println(page.getContent());
+
+    }
+
+    @Test
+    void pageGG(){
+
+        Specification specification = new Specification<User>(){
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery,
+                                         CriteriaBuilder criteriaBuilder) {
+                Path path= root.get("username");
+                Predicate equal = criteriaBuilder.equal(path,"zxj");
+//                criteriaBuilder.and(equal,equal);
+
+                return equal;
+            }
+        };
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "username");
+        Pageable pageable = PageRequest.of(0, 10,sort);
+        Page<User> page;
+        page = userRepository.findAll(specification,pageable);
+        System.out.println(page);
+        System.out.println(page.getTotalElements());
+        System.out.println(page.getTotalPages());
+        System.out.println(page.getContent());
+
+    }
 }
