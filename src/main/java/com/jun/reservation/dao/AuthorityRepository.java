@@ -6,4 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority,Long> {
+
+    Authority findAuthorityByAuthName(String authName);
+
+    Authority findAuthorityById(Long id);
+
 }
