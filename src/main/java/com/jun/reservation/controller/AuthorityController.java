@@ -21,7 +21,7 @@ public class AuthorityController {
     //    @PreAuthorize("hasAuthority('authority:get')")
     @RequestMapping(value = "/authority",method = RequestMethod.GET)
     @ResponseBody
-    public Result findUser(@RequestParam int pageNum, @RequestParam int pageSize){
+    public Result findAuthorities(@RequestParam int pageNum, @RequestParam int pageSize){
         Pagination pagination = null;
 
         try {

@@ -21,7 +21,7 @@ public class RoleController {
     //    @PreAuthorize("hasAuthority('role:get')")
     @RequestMapping(value = "/role",method = RequestMethod.GET)
     @ResponseBody
-    public Result findUser(@RequestParam int pageNum, @RequestParam int pageSize){
+    public Result findRoles(@RequestParam int pageNum, @RequestParam int pageSize){
         Pagination pagination = null;
 
         try {
