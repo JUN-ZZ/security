@@ -168,4 +168,21 @@ public class UserController {
     }
 
 
+    //    @PreAuthorize("hasAuthority('user:get')")
+    @RequestMapping(value = "/findUserByUsername",method = RequestMethod.GET)
+    @ResponseBody
+    public Result findUserByUsername(@RequestParam String username){
+        User user = null;
+
+        try {
+            user = userService.findUserByName(username);
+
+        }catch (Exception e){
+            return ResponseResult.failure(e.getMessage());
+        }
+        return ResponseResult.success(user);
+    }
+
+
+
 }
