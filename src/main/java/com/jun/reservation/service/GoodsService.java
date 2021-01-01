@@ -25,6 +25,8 @@ public interface GoodsService {
 
     public Goods updateGoods(Goods goods);
 
+    public Goods updateGoodsImg(Long id,String img);
+
 
 
 

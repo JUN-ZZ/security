@@ -70,5 +70,17 @@ public class GoodsServiceImp implements GoodsService {
     }
 
 
+    @Transactional
+    @Override
+    public Goods updateGoodsImg(Long id, String img) {
+
+        Goods goods = goodsRepository.findGoodsById(id);
+        goods.setImgUrl(img);
+
+        return goodsRepository.saveAndFlush(goods);
+
+
+    }
+
 
 }

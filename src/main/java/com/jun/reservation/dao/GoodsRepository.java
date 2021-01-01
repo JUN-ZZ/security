@@ -10,5 +10,6 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     Goods findGoodsByName(String name);
 
+    Goods findGoodsById(Long id);
 
 }

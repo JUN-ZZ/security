@@ -8,6 +8,8 @@ import com.jun.reservation.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * @author jun
  * @date 2021/1/1
@@ -60,6 +62,29 @@ public class GoodsController {
         }
         return ResponseResult.success(goods1);
     }
+
+
+    @RequestMapping(value = "/goods/img",method = RequestMethod.PUT)
+    @ResponseBody
+    public Result updateShopImg(@RequestBody Map<String,Object> map){
+//七牛云
+
+        Goods goods1 = null;
+        try {
+
+            Long id = Long.valueOf((Long) map.get("id"));
+            String img = (String) map.get("imgUrl");
+
+            goods1 = goodsService.updateGoodsImg(id,img);
+
+        }catch (Exception e){
+            return ResponseResult.failure(e.getMessage());
+        }
+
+
+        return ResponseResult.success(goods1);
+    }
+
 
 
 }
