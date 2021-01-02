@@ -46,7 +46,7 @@ public class QiniuUtils {
 
 
     //     密钥
-    private Auth auth = Auth.create(accessKey, secretKey);
+//    private Auth auth = Auth.create(accessKey, secretKey);
 
     public QiniuUtils(){
     }
@@ -55,7 +55,7 @@ public class QiniuUtils {
     /**
      * 将图片上传到七牛云
      */
-    public String uploadQNImg(FileInputStream file, String key) {
+    public String uploadQNImg(FileInputStream file, String key) throws QiniuException {
 
         // 构造一个带指定Zone对象的配置类, 注意这里的Zone.zone0需要根据主机选择
         Configuration cfg = new Configuration(Zone.zone2());
@@ -64,7 +64,7 @@ public class QiniuUtils {
         // 生成上传凭证，然后准备上传
 
         try {
-//            Auth auth = Auth.create(accessKey, secretKey);
+            Auth auth = Auth.create(accessKey, secretKey);
             String upToken = auth.uploadToken(bucketName);
             try {
                 Response response = uploadManager.put(file, key, upToken, null, null);
@@ -81,12 +81,14 @@ public class QiniuUtils {
                     System.err.println(r.bodyString());
                 } catch (QiniuException ex2) {
                     //ignore
+                    throw ex;
                 }
+                throw ex;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
-        return "";
     }
 
     /**
@@ -94,11 +96,19 @@ public class QiniuUtils {
      * @Param: fileName
      * @return: 云服务器fileName
      */
-    public static String getRandomImgName() {
+    public static String getRandomImgName(String fileName) {
+        String suffix;
 
+        if ((fileName == null || fileName.isEmpty())){
+            suffix = ".jpg";
+        }else {
+            int index = fileName.lastIndexOf(".");
+            suffix = index !=-1 ? fileName.substring(index): ".jpg";
+        }
+        // 获取文件后缀
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         // 生成上传至云服务器的路径
-        String path = uuid + ".jpg" ;
+        String path = uuid + suffix;
         return path;
     }
 }

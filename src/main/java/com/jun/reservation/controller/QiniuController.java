@@ -31,14 +31,21 @@ public class QiniuController{
     @RequestMapping(value = "/images", method = RequestMethod.POST)
     private Result postImgs(HttpServletRequest request, @RequestParam("file") MultipartFile multipartFile) throws IOException {
 
-        // 用来获取其他参数
-        MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
-        if (!multipartFile.isEmpty()) {
-            FileInputStream inputStream = (FileInputStream) multipartFile.getInputStream();
-            String path = qiniuUtils.uploadQNImg(inputStream, qiniuUtils.getRandomImgName()); // KeyUtil.genUniqueKey()生成图片的随机名
-            System.out.print("七牛云返回的图片链接:" + path);
-            return ResponseResult.success(path);
+        try {
+
+            // 用来获取其他参数
+            MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
+            if (!multipartFile.isEmpty()) {
+                FileInputStream inputStream = (FileInputStream) multipartFile.getInputStream();
+                String path = qiniuUtils.uploadQNImg(inputStream, qiniuUtils.getRandomImgName(multipartFile.getOriginalFilename())); // KeyUtil.genUniqueKey()生成图片的随机名
+                System.out.print("七牛云返回的图片链接:" + path);
+                return ResponseResult.success(path, "图片上传成功");
+            }
+
+        }catch (Exception e){
+            return ResponseResult.failure("上传失败");
         }
+
         return ResponseResult.failure("上传失败");
     }
 
