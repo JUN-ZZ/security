@@ -15,11 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @SpringBootTest(classes = ReservationApplication.class)
@@ -55,7 +52,7 @@ class ReservationApplicationTests {
 
     }
 
-    @Test
+//    @Test
     void saveUser(){
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         User user = new User();
