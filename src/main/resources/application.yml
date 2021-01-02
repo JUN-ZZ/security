@@ -20,6 +20,15 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
 
+# 七牛云存储
+oss:
+  qiniu:
+    domain: http://qm9jv5yvy.hn-bkt.clouddn.com # 访问域名(默认使用七牛云测试域名)qm9jv5yvy.hn-bkt.clouddn.com
+    accessKey: SAMlj6hUfAl_yyaOyaL1keo_zMv9iMNPYifl2JxI # 公钥
+    secretKey: e7L9cgtG0PeLyN-i98sBFvkgUUvhTbAok9B31RjE # 私钥
+    bucketName: reservation  #存储空间名称
+
+
 #  security:
 #    user:
 #      name: zxj
